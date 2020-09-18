@@ -13,6 +13,8 @@ function toMarkdown(options) {
 
   return {
     unsafe: [
+      {character: '\r', inConstruct: 'tableCell'},
+      {character: '\n', inConstruct: 'tableCell'},
       // A pipe, when followed by a tab or space (padding), or a dash or colon
       // (unpadded delimiter row), could result in a table.
       {atBreak: true, character: '|', after: '[\t :-]'},

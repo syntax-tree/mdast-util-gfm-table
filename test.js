@@ -390,5 +390,14 @@ test('mdast -> markdown', function (t) {
     'should escape a pipe character in code in a table cell'
   )
 
+  t.deepEqual(
+    toMarkdown(
+      {type: 'tableCell', children: [{type: 'text', value: 'a\nb'}]},
+      {extensions: [table.toMarkdown()]}
+    ),
+    'a&#xA;b',
+    'should escape eols in a table cell'
+  )
+
   t.end()
 })
