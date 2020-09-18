@@ -18,6 +18,9 @@ function toMarkdown(options) {
       // A pipe, when followed by a tab or space (padding), or a dash or colon
       // (unpadded delimiter row), could result in a table.
       {atBreak: true, character: '|', after: '[\t :-]'},
+      // A pipe, when followed by a tab or space (padding), or a dash or colon
+      // (unpadded delimiter row), could result in a table.
+      {character: '|', inConstruct: 'tableCell'},
       // A colon must be followed by a dash, in which case it could start a
       // delimiter row.
       {atBreak: true, character: ':', after: '-'},
