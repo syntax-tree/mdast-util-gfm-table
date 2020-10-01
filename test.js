@@ -135,16 +135,13 @@ test('mdast -> markdown', function (t) {
         type: 'tableCell',
         children: [
           {type: 'text', value: 'a '},
-          {
-            type: 'emphasis',
-            children: [{type: 'text', value: 'b'}]
-          },
+          {type: 'emphasis', children: [{type: 'text', value: 'b'}]},
           {type: 'text', value: ' c.'}
         ]
       },
       {extensions: [table.toMarkdown()]}
     ),
-    'a *b* c.',
+    'a *b* c.\n',
     'should serialize a table cell'
   )
 
@@ -158,10 +155,7 @@ test('mdast -> markdown', function (t) {
             type: 'tableCell',
             children: [
               {type: 'text', value: 'b '},
-              {
-                type: 'emphasis',
-                children: [{type: 'text', value: 'c'}]
-              },
+              {type: 'emphasis', children: [{type: 'text', value: 'c'}]},
               {type: 'text', value: ' d.'}
             ]
           }
@@ -169,7 +163,7 @@ test('mdast -> markdown', function (t) {
       },
       {extensions: [table.toMarkdown()]}
     ),
-    '| a | b *c* d. |',
+    '| a | b *c* d. |\n',
     'should serialize a table row'
   )
 
@@ -203,7 +197,7 @@ test('mdast -> markdown', function (t) {
       },
       {extensions: [table.toMarkdown()]}
     ),
-    '| a | b *c* d. |\n| - | -------- |\n| e | `f`      |',
+    '| a | b *c* d. |\n| - | -------- |\n| e | `f`      |\n',
     'should serialize a table'
   )
 
@@ -235,7 +229,7 @@ test('mdast -> markdown', function (t) {
       },
       {extensions: [table.toMarkdown()]}
     ),
-    '| a   | b   |  c  |   d |\n| --- | :-- | :-: | --: |\n| aaa | bbb | ccc | ddd |',
+    '| a   | b   |  c  |   d |\n| --- | :-- | :-: | --: |\n| aaa | bbb | ccc | ddd |\n',
     'should align cells'
   )
 
@@ -262,7 +256,7 @@ test('mdast -> markdown', function (t) {
     toMarkdown(minitable, {
       extensions: [table.toMarkdown({tableCellPadding: false})]
     }),
-    '|a|b | c |\n|-|:-|:-:|',
+    '|a|b | c |\n|-|:-|:-:|\n',
     'should support `tableCellPadding: false`'
   )
 
@@ -278,7 +272,7 @@ test('mdast -> markdown', function (t) {
     toMarkdown(minitable, {
       extensions: [table.toMarkdown({tablePipeAlign: false})]
     }),
-    '| a | b | c |\n| - | :- | :-: |',
+    '| a | b | c |\n| - | :- | :-: |\n',
     'should support `tablePipeAlign: false`'
   )
 
@@ -310,11 +304,9 @@ test('mdast -> markdown', function (t) {
           }
         ]
       },
-      {
-        extensions: [table.toMarkdown({stringLength: stringWidth})]
-      }
+      {extensions: [table.toMarkdown({stringLength: stringWidth})]}
     ),
-    '| a | 古 | \u001B[1m古\u001B[22m | 🤔 |\n| - | -- | -- | -- |',
+    '| a | 古 | \u001B[1m古\u001B[22m | 🤔 |\n| - | -- | -- | -- |\n',
     'should support `stringLength`'
   )
 
@@ -323,7 +315,7 @@ test('mdast -> markdown', function (t) {
       {type: 'paragraph', children: [{type: 'text', value: '| a |\n| - |'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    '\\| a |\n\\| - |',
+    '\\| a |\n\\| - |\n',
     'should escape the leading pipe in what would start or continue a table'
   )
 
@@ -332,7 +324,7 @@ test('mdast -> markdown', function (t) {
       {type: 'paragraph', children: [{type: 'text', value: 'a|\n-|'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    'a|\n\\-|',
+    'a|\n\\-|\n',
     'should escape the leading dash in what could start a delimiter row (done by list dash)'
   )
 
@@ -341,7 +333,7 @@ test('mdast -> markdown', function (t) {
       {type: 'paragraph', children: [{type: 'text', value: 'a\n:-'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    'a\n\\:-',
+    'a\n\\:-\n',
     'should escape the leading colon in what could start a delimiter row'
   )
 
@@ -350,7 +342,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\b'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    '`a\\b`',
+    '`a\\b`\n',
     'should not escape a backslash in code in a table cell'
   )
 
@@ -359,7 +351,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\\\b'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    '`a\\\\b`',
+    '`a\\\\b`\n',
     'should not escape an “escaped” backslash in code in a table cell'
   )
 
@@ -368,7 +360,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\+b'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    '`a\\+b`',
+    '`a\\+b`\n',
     'should not escape an “escaped” other punctuation character in code in a table cell'
   )
 
@@ -377,7 +369,7 @@ test('mdast -> markdown', function (t) {
       {type: 'inlineCode', value: 'a|b'},
       {extensions: [table.toMarkdown()]}
     ),
-    '`a|b`',
+    '`a|b`\n',
     'should not escape a pipe character in code *not* in a table cell'
   )
 
@@ -386,7 +378,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    '`a\\|b`',
+    '`a\\|b`\n',
     'should escape a pipe character in code in a table cell'
   )
 
@@ -395,7 +387,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'text', value: 'a\nb'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    'a&#xA;b',
+    'a&#xA;b\n',
     'should escape eols in a table cell'
   )
 
@@ -404,7 +396,7 @@ test('mdast -> markdown', function (t) {
       {type: 'tableCell', children: [{type: 'text', value: 'a|b'}]},
       {extensions: [table.toMarkdown()]}
     ),
-    'a\\|b',
+    'a\\|b\n',
     'should escape pipes in a table cell'
   )
 
