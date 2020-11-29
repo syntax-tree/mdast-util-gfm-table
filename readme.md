@@ -174,9 +174,9 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://img.shields.io/travis/syntax-tree/mdast-util-gfm-table.svg
+[build-badge]: https://github.com/syntax-tree/mdast-util-gfm-table/workflows/main/badge.svg
 
-[build]: https://travis-ci.org/syntax-tree/mdast-util-gfm-table
+[build]: https://github.com/syntax-tree/mdast-util-gfm-table/actions
 
 [coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/mdast-util-gfm-table.svg
 
