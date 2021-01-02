@@ -104,7 +104,7 @@ function toMarkdown(options) {
     var value = defaultInlineCode(node, parent, context)
 
     if (context.stack.indexOf('tableCell') !== -1) {
-      value = value.replace(/\|/, '\\$&')
+      value = value.replace(/\|/g, '\\$&')
     }
 
     return value

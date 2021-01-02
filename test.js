@@ -400,5 +400,40 @@ test('mdast -> markdown', function (t) {
     'should escape pipes in a table cell'
   )
 
+  t.deepEqual(
+    toMarkdown(
+      {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b|c'}]},
+      {extensions: [table.toMarkdown()]}
+    ),
+    '`a\\|b\\|c`\n',
+    'should escape multiple pipes in inline code in a table cell'
+  )
+
+  t.deepEqual(
+    toMarkdown(
+      {type: 'tableCell', children: [{type: 'text', value: 'a|b|c'}]},
+      {extensions: [table.toMarkdown()]}
+    ),
+    'a\\|b\\|c\n',
+    'should escape multiple pipes in a table cell'
+  )
+
+  t.deepEqual(
+    toMarkdown(
+      {type: 'tableCell', children: [{type: 'inlineCode', value: 'a||b'}]},
+      {extensions: [table.toMarkdown()]}
+    ),
+    '`a\\|\\|b`\n',
+    'should escape adjacent pipes in inline code in a table cell'
+  )
+  t.deepEqual(
+    toMarkdown(
+      {type: 'tableCell', children: [{type: 'text', value: 'a||b'}]},
+      {extensions: [table.toMarkdown()]}
+    ),
+    'a\\|\\|b\n',
+    'should escape adjacent pipes in a table cell'
+  )
+
   t.end()
 })
