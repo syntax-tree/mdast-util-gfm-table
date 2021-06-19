@@ -19,6 +19,9 @@ You probably shouldn’t use this package directly, but instead use
 
 ## Install
 
+This package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c):
+Node 12+ is needed to use it and it must be `import`ed instead of `require`d.
+
 [npm][]:
 
 ```sh
@@ -111,15 +114,15 @@ brevity):
 
 ## API
 
-### `table.fromMarkdown`
+This package exports the following identifier: `gfmTableFromMarkdown`,
+`gfmTableToMarkdown`.
+There is no default export.
 
-### `table.toMarkdown(options?)`
+### `gfmTableFromMarkdown`
 
-> Note: the separate extensions are also available at
-> `mdast-util-gfm-table/from-markdown` and
-> `mdast-util-gfm-table/to-markdown`.
+### `gfmTableToMarkdown(options?)`
 
-Support tables.
+Support GFM tables.
 The exports of `fromMarkdown` is an extension for
 [`mdast-util-from-markdown`][from-markdown].
 The export of `toMarkdown` is a function that can be called with options and
