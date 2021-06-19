@@ -6,7 +6,7 @@ import {removePosition} from 'unist-util-remove-position'
 import gfmTable from 'micromark-extension-gfm-table'
 import {gfmTableFromMarkdown, gfmTableToMarkdown} from './index.js'
 
-test('markdown -> mdast', function (t) {
+test('markdown -> mdast', (t) => {
   t.deepEqual(
     fromMarkdown('| a\n| -', {
       extensions: [gfmTable],
@@ -128,7 +128,7 @@ test('markdown -> mdast', function (t) {
   t.end()
 })
 
-test('mdast -> markdown', function (t) {
+test('mdast -> markdown', (t) => {
   t.deepEqual(
     toMarkdown(
       {
@@ -233,7 +233,7 @@ test('mdast -> markdown', function (t) {
     'should align cells'
   )
 
-  var minitable = {
+  const minitable = {
     type: 'table',
     align: [null, 'left', 'center', 'right'],
     children: [
@@ -248,7 +248,7 @@ test('mdast -> markdown', function (t) {
     ]
   }
 
-  var minitableDefault = toMarkdown(minitable, {
+  const minitableDefault = toMarkdown(minitable, {
     extensions: [gfmTableToMarkdown()]
   })
 

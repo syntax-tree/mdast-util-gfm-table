@@ -43,7 +43,7 @@ function enterCell(token) {
 // Overwrite the default code text data handler to unescape escaped pipes when
 // they are in tables.
 function exitCodeText(token) {
-  var value = this.resume()
+  let value = this.resume()
 
   if (this.getData('inTable')) {
     value = value.replace(/\\([\\|])/g, replace)
@@ -59,11 +59,11 @@ function replace($0, $1) {
 }
 
 export function gfmTableToMarkdown(options) {
-  var settings = options || {}
-  var padding = settings.tableCellPadding
-  var alignDelimiters = settings.tablePipeAlign
-  var stringLength = settings.stringLength
-  var around = padding ? ' ' : '|'
+  const settings = options || {}
+  const padding = settings.tableCellPadding
+  const alignDelimiters = settings.tablePipeAlign
+  const stringLength = settings.stringLength
+  const around = padding ? ' ' : '|'
 
   return {
     unsafe: [
@@ -100,15 +100,15 @@ export function gfmTableToMarkdown(options) {
   // table level.
   // But, if someone passes in a table row, this ensures we make somewhat sense.
   function handleTableRow(node, _, context) {
-    var row = handleTableRowAsData(node, context)
+    const row = handleTableRowAsData(node, context)
     // `markdown-table` will always add an align row
-    var value = serializeData([row])
+    const value = serializeData([row])
     return value.slice(0, value.indexOf('\n'))
   }
 
   function handleTableCell(node, _, context) {
-    var exit = context.enter('tableCell')
-    var value = phrasing(node, context, {before: around, after: around})
+    const exit = context.enter('tableCell')
+    const value = phrasing(node, context, {before: around, after: around})
     exit()
     return value
   }
@@ -123,11 +123,11 @@ export function gfmTableToMarkdown(options) {
   }
 
   function handleTableAsData(node, context) {
-    var children = node.children
-    var index = -1
-    var length = children.length
-    var result = []
-    var subexit = context.enter('table')
+    const children = node.children
+    let index = -1
+    const length = children.length
+    const result = []
+    const subexit = context.enter('table')
 
     while (++index < length) {
       result[index] = handleTableRowAsData(children[index], context)
@@ -139,11 +139,11 @@ export function gfmTableToMarkdown(options) {
   }
 
   function handleTableRowAsData(node, context) {
-    var children = node.children
-    var index = -1
-    var length = children.length
-    var result = []
-    var subexit = context.enter('tableRow')
+    const children = node.children
+    let index = -1
+    const length = children.length
+    const result = []
+    const subexit = context.enter('tableRow')
 
     while (++index < length) {
       result[index] = handleTableCell(children[index], node, context)
@@ -155,9 +155,9 @@ export function gfmTableToMarkdown(options) {
   }
 
   function inlineCodeWithTable(node, parent, context) {
-    var value = defaultInlineCode(node, parent, context)
+    let value = defaultInlineCode(node, parent, context)
 
-    if (context.stack.indexOf('tableCell') !== -1) {
+    if (context.stack.includes('tableCell')) {
       value = value.replace(/\|/g, '\\$&')
     }
 
