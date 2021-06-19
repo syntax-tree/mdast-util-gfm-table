@@ -14,8 +14,10 @@ tables in **[mdast][]**.
 When parsing (`from-markdown`), must be combined with
 [`micromark-extension-gfm-table`][extension].
 
-You probably shouldn’t use this package directly, but instead use
-[`remark-gfm`][remark-gfm] with **[remark][]**.
+## When to use this
+
+Use [`mdast-util-gfm`][mdast-util-gfm] if you want all of GFM.
+Use this otherwise.
 
 ## Install
 
@@ -39,25 +41,25 @@ Say we have the following file, `example.md`:
 | g | h | i | j | k |
 ```
 
-And our script, `example.js`, looks as follows:
+And our module, `example.js`, looks as follows:
 
 ```js
-var fs = require('fs')
-var fromMarkdown = require('mdast-util-from-markdown')
-var toMarkdown = require('mdast-util-to-markdown')
-var syntax = require('micromark-extension-gfm-table')
-var table = require('mdast-util-gfm-table')
+import fs from 'node:fs'
+import {fromMarkdown} from 'mdast-util-from-markdown'
+import {toMarkdown} from 'mdast-util-to-markdown'
+import {gfmTable} from 'micromark-extension-gfm-table'
+import {gfmTableFromMarkdown, gfmTableToMarkdown} from 'mdast-util-gfm-table'
 
-var doc = fs.readFileSync('example.md')
+const doc = fs.readFileSync('example.md')
 
-var tree = fromMarkdown(doc, {
-  extensions: [syntax],
-  mdastExtensions: [table.fromMarkdown]
+const tree = fromMarkdown(doc, {
+  extensions: [gfmTable],
+  mdastExtensions: [gfmTableFromMarkdown]
 })
 
 console.log(tree)
 
-var out = toMarkdown(tree, {extensions: [table.toMarkdown()]})
+const out = toMarkdown(tree, {extensions: [gfmTableToMarkdown()]})
 
 console.log(out)
 ```
@@ -232,3 +234,5 @@ abide by its terms.
 [markdown-table]: https://github.com/wooorm/markdown-table
 
 [string-length]: https://github.com/wooorm/markdown-table#optionsstringlength
+
+[mdast-util-gfm]: https://github.com/syntax-tree/mdast-util-gfm
