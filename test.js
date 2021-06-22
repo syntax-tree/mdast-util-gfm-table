@@ -1,9 +1,9 @@
 import test from 'tape'
 import stringWidth from 'string-width'
-import fromMarkdown from 'mdast-util-from-markdown'
-import toMarkdown from 'mdast-util-to-markdown'
+import {fromMarkdown} from 'mdast-util-from-markdown'
+import {toMarkdown} from 'mdast-util-to-markdown'
 import {removePosition} from 'unist-util-remove-position'
-import gfmTable from 'micromark-extension-gfm-table'
+import {gfmTable} from 'micromark-extension-gfm-table'
 import {gfmTableFromMarkdown, gfmTableToMarkdown} from './index.js'
 
 test('markdown -> mdast', (t) => {
@@ -67,15 +67,23 @@ test('markdown -> mdast', (t) => {
         mdastExtensions: [gfmTableFromMarkdown]
       }),
       true
-    ).children[0],
+    ),
     {
-      type: 'table',
-      align: [null],
+      type: 'root',
       children: [
         {
-          type: 'tableRow',
+          type: 'table',
+          align: [null],
           children: [
-            {type: 'tableCell', children: [{type: 'inlineCode', value: '|'}]}
+            {
+              type: 'tableRow',
+              children: [
+                {
+                  type: 'tableCell',
+                  children: [{type: 'inlineCode', value: '|'}]
+                }
+              ]
+            }
           ]
         }
       ]
@@ -90,8 +98,13 @@ test('markdown -> mdast', (t) => {
         mdastExtensions: [gfmTableFromMarkdown]
       }),
       true
-    ).children[0],
-    {type: 'paragraph', children: [{type: 'inlineCode', value: '\\|'}]},
+    ),
+    {
+      type: 'root',
+      children: [
+        {type: 'paragraph', children: [{type: 'inlineCode', value: '\\|'}]}
+      ]
+    },
     'should not support an escaped pipe in code *not* in a table cell'
   )
 
@@ -102,20 +115,25 @@ test('markdown -> mdast', (t) => {
         mdastExtensions: [gfmTableFromMarkdown]
       }),
       true
-    ).children[0],
+    ),
     {
-      type: 'table',
-      align: [null, null],
+      type: 'root',
       children: [
         {
-          type: 'tableRow',
+          type: 'table',
+          align: [null, null],
           children: [
-            {type: 'tableCell', children: [{type: 'text', value: '`\\'}]},
             {
-              type: 'tableCell',
+              type: 'tableRow',
               children: [
-                {type: 'inlineCode', value: '\\\\'},
-                {type: 'text', value: ' b'}
+                {type: 'tableCell', children: [{type: 'text', value: '`\\'}]},
+                {
+                  type: 'tableCell',
+                  children: [
+                    {type: 'inlineCode', value: '\\\\'},
+                    {type: 'text', value: ' b'}
+                  ]
+                }
               ]
             }
           ]
