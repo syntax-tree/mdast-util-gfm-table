@@ -1,4 +1,5 @@
 /**
+ * @typedef {import('mdast').AlignType} AlignType
  * @typedef {import('mdast').Table} Table
  * @typedef {import('mdast').TableRow} TableRow
  * @typedef {import('mdast').TableCell} TableCell
@@ -39,8 +40,10 @@ export const gfmTableFromMarkdown = {
 
 /** @type {FromMarkdownHandle} */
 function enterTable(token) {
+  /** @type {AlignType[]} */
   // @ts-expect-error: `align` is custom.
-  this.enter({type: 'table', align: token._align, children: []}, token)
+  const align = token._align
+  this.enter({type: 'table', align, children: []}, token)
   this.setData('inTable', true)
 }
 
@@ -75,7 +78,8 @@ function exitCodeText(token) {
     value = value.replace(/\\([\\|])/g, replace)
   }
 
-  this.stack[this.stack.length - 1].value = value
+  const node = /** @type {InlineCode} */ (this.stack[this.stack.length - 1])
+  node.value = value
   this.exit(token)
 }
 

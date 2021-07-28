@@ -1,3 +1,7 @@
+/**
+ * @typedef {import('mdast').Table} Table
+ */
+
 import test from 'tape'
 import stringWidth from 'string-width'
 import {fromMarkdown} from 'mdast-util-from-markdown'
@@ -251,6 +255,7 @@ test('mdast -> markdown', (t) => {
     'should align cells'
   )
 
+  /** @type {Table} */
   const minitable = {
     type: 'table',
     align: [null, 'left', 'center', 'right'],
