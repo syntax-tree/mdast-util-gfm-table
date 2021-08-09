@@ -362,6 +362,18 @@ test('mdast -> markdown', (t) => {
 
   t.deepEqual(
     toMarkdown(
+      {
+        type: 'tableCell',
+        children: [{type: 'text', value: '<a b>'}]
+      },
+      {extensions: [gfmTableToMarkdown()]}
+    ),
+    '&lt;a b&gt;\n',
+    'should escape html chars'
+  )
+
+  t.deepEqual(
+    toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\b'}]},
       {extensions: [gfmTableToMarkdown()]}
     ),
