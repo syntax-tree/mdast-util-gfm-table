@@ -318,10 +318,6 @@ test('mdast -> markdown', (t) => {
             children: [
               {type: 'tableCell', children: [{type: 'text', value: 'a'}]},
               {type: 'tableCell', children: [{type: 'text', value: '古'}]},
-              {
-                type: 'tableCell',
-                children: [{type: 'text', value: '\u001B[1m古\u001B[22m'}]
-              },
               {type: 'tableCell', children: [{type: 'text', value: '🤔'}]}
             ]
           }
@@ -329,7 +325,7 @@ test('mdast -> markdown', (t) => {
       },
       {extensions: [gfmTableToMarkdown({stringLength: stringWidth})]}
     ),
-    '| a | 古 | \u001B[1m古\u001B[22m | 🤔 |\n| - | -- | -- | -- |\n',
+    '| a | 古 | 🤔 |\n| - | -- | -- |\n',
     'should support `stringLength`'
   )
 
@@ -412,6 +408,22 @@ test('mdast -> markdown', (t) => {
     ),
     'a&#xA;b\n',
     'should escape eols in a table cell'
+  )
+
+  t.deepEqual(
+    toMarkdown(
+      {
+        type: 'tableRow',
+        children: [
+          {type: 'tableCell', children: [{type: 'text', value: '<a>'}]},
+          {type: 'tableCell', children: [{type: 'text', value: '*a'}]},
+          {type: 'tableCell', children: [{type: 'text', value: '![]()'}]}
+        ]
+      },
+      {extensions: [gfmTableToMarkdown()]}
+    ),
+    '| \\<a> | \\*a | !\\[]\\() |\n',
+    'should escape phrasing characters in table cells'
   )
 
   t.deepEqual(

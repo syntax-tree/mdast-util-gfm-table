@@ -161,10 +161,12 @@ export function gfmTableToMarkdown(options) {
    */
   function handleTableCell(node, _, context) {
     const exit = context.enter('tableCell')
+    const subexit = context.enter('phrasing')
     const value = containerPhrasing(node, context, {
       before: around,
       after: around
     })
+    subexit()
     exit()
     return value
   }
