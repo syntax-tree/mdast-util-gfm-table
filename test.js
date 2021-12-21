@@ -66,6 +66,37 @@ test('markdown -> mdast', (t) => {
 
   t.deepEqual(
     removePosition(
+      fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
+        extensions: [gfmTable],
+        mdastExtensions: [gfmTableFromMarkdown]
+      }),
+      true
+    ),
+    {
+      type: 'root',
+      children: [
+        {
+          type: 'table',
+          align: [null, 'left', 'right', 'center'],
+          children: [
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'a'}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'b'}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'c'}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'd'}]}
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    'should support alignment'
+  )
+
+  t.deepEqual(
+    removePosition(
       fromMarkdown('| `\\|` |\n | --- |', {
         extensions: [gfmTable],
         mdastExtensions: [gfmTableFromMarkdown]

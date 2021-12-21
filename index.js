@@ -40,10 +40,17 @@ export const gfmTableFromMarkdown = {
 
 /** @type {FromMarkdownHandle} */
 function enterTable(token) {
-  /** @type {AlignType[]} */
+  /** @type {Array<'left'|'right'|'center'|'none'>} */
   // @ts-expect-error: `align` is custom.
   const align = token._align
-  this.enter({type: 'table', align, children: []}, token)
+  this.enter(
+    {
+      type: 'table',
+      align: align.map((d) => (d === 'none' ? null : d)),
+      children: []
+    },
+    token
+  )
   this.setData('inTable', true)
 }
 
