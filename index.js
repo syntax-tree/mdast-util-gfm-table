@@ -10,6 +10,7 @@
  * @typedef {import('mdast-util-to-markdown').Options} ToMarkdownExtension
  * @typedef {import('mdast-util-to-markdown').Handle} ToMarkdownHandle
  * @typedef {import('mdast-util-to-markdown').Context} ToMarkdownContext
+ * @typedef {import('mdast-util-to-markdown').SafeOptions} SafeOptions
  *
  * @typedef Options
  * @property {boolean} [tableCellPadding=true]
@@ -142,9 +143,12 @@ export function gfmTableToMarkdown(options) {
    * @type {ToMarkdownHandle}
    * @param {Table} node
    */
-  function handleTable(node, _, context) {
-    // @ts-expect-error: fixed in `markdown-table@3.0.1`.
-    return serializeData(handleTableAsData(node, context), node.align)
+  function handleTable(node, _, context, safeOptions) {
+    return serializeData(
+      handleTableAsData(node, context, safeOptions),
+      // @ts-expect-error: fixed in `markdown-table@3.0.1`.
+      node.align
+    )
   }
 
   /**
@@ -155,8 +159,8 @@ export function gfmTableToMarkdown(options) {
    * @type {ToMarkdownHandle}
    * @param {TableRow} node
    */
-  function handleTableRow(node, _, context) {
-    const row = handleTableRowAsData(node, context)
+  function handleTableRow(node, _, context, safeOptions) {
+    const row = handleTableRowAsData(node, context, safeOptions)
     // `markdown-table` will always add an align row
     const value = serializeData([row])
     return value.slice(0, value.indexOf('\n'))
@@ -166,10 +170,11 @@ export function gfmTableToMarkdown(options) {
    * @type {ToMarkdownHandle}
    * @param {TableCell} node
    */
-  function handleTableCell(node, _, context) {
+  function handleTableCell(node, _, context, safeOptions) {
     const exit = context.enter('tableCell')
     const subexit = context.enter('phrasing')
     const value = containerPhrasing(node, context, {
+      ...safeOptions,
       before: around,
       after: around
     })
@@ -179,8 +184,8 @@ export function gfmTableToMarkdown(options) {
   }
 
   /**
-   * @param {Array.<Array.<string>>} matrix
-   * @param {Array.<string>} [align]
+   * @param {Array<Array<string>>} matrix
+   * @param {Array<string>} [align]
    */
   function serializeData(matrix, align) {
     return markdownTable(matrix, {
@@ -194,16 +199,21 @@ export function gfmTableToMarkdown(options) {
   /**
    * @param {Table} node
    * @param {ToMarkdownContext} context
+   * @param {SafeOptions} safeOptions
    */
-  function handleTableAsData(node, context) {
+  function handleTableAsData(node, context, safeOptions) {
     const children = node.children
     let index = -1
-    /** @type {Array.<Array.<string>>} */
+    /** @type {Array<Array<string>>} */
     const result = []
     const subexit = context.enter('table')
 
     while (++index < children.length) {
-      result[index] = handleTableRowAsData(children[index], context)
+      result[index] = handleTableRowAsData(
+        children[index],
+        context,
+        safeOptions
+      )
     }
 
     subexit()
@@ -214,16 +224,25 @@ export function gfmTableToMarkdown(options) {
   /**
    * @param {TableRow} node
    * @param {ToMarkdownContext} context
+   * @param {SafeOptions} safeOptions
    */
-  function handleTableRowAsData(node, context) {
+  function handleTableRowAsData(node, context, safeOptions) {
     const children = node.children
     let index = -1
-    /** @type {Array.<string>} */
+    /** @type {Array<string>} */
     const result = []
     const subexit = context.enter('tableRow')
 
     while (++index < children.length) {
-      result[index] = handleTableCell(children[index], node, context)
+      // Note: the positional info as used here is incorrect.
+      // Making it correct would be impossible due to aligning cells?
+      // And it would need copy/pasting `markdown-table` into this project.
+      result[index] = handleTableCell(
+        children[index],
+        node,
+        context,
+        safeOptions
+      )
     }
 
     subexit()
