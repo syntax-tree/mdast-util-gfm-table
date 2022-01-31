@@ -1,6 +1,6 @@
 {
   "name": "mdast-util-gfm-table",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "mdast extension to parse and serialize GFM tables",
   "license": "MIT",
   "keywords": [
