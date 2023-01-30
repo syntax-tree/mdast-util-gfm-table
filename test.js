@@ -2,7 +2,8 @@
  * @typedef {import('mdast').Table} Table
  */
 
-import test from 'tape'
+import assert from 'node:assert/strict'
+import test from 'node:test'
 import stringWidth from 'string-width'
 import {fromMarkdown} from 'mdast-util-from-markdown'
 import {toMarkdown} from 'mdast-util-to-markdown'
@@ -10,8 +11,8 @@ import {removePosition} from 'unist-util-remove-position'
 import {gfmTable} from 'micromark-extension-gfm-table'
 import {gfmTableFromMarkdown, gfmTableToMarkdown} from './index.js'
 
-test('markdown -> mdast', (t) => {
-  t.deepEqual(
+test('gfmTableFromMarkdown', () => {
+  assert.deepEqual(
     fromMarkdown('| a\n| -', {
       extensions: [gfmTable],
       mdastExtensions: [gfmTableFromMarkdown]
@@ -64,7 +65,7 @@ test('markdown -> mdast', (t) => {
     'should support tables'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     removePosition(
       fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
         extensions: [gfmTable],
@@ -95,7 +96,7 @@ test('markdown -> mdast', (t) => {
     'should support alignment'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     removePosition(
       fromMarkdown('| `\\|` |\n | --- |', {
         extensions: [gfmTable],
@@ -126,7 +127,7 @@ test('markdown -> mdast', (t) => {
     'should support an escaped pipe in code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     removePosition(
       fromMarkdown('`\\|`', {
         extensions: [gfmTable],
@@ -143,7 +144,7 @@ test('markdown -> mdast', (t) => {
     'should not support an escaped pipe in code *not* in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     removePosition(
       fromMarkdown('| `\\\\|`\\\\` b |\n | --- | --- |', {
         extensions: [gfmTable],
@@ -177,12 +178,10 @@ test('markdown -> mdast', (t) => {
     },
     'should not support an escaped escape in code in a table cell'
   )
-
-  t.end()
 })
 
-test('mdast -> markdown', (t) => {
-  t.deepEqual(
+test('gfmTableToMarkdown', () => {
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'tableCell',
@@ -198,7 +197,7 @@ test('mdast -> markdown', (t) => {
     'should serialize a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'tableRow',
@@ -220,7 +219,7 @@ test('mdast -> markdown', (t) => {
     'should serialize a table row'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'table',
@@ -254,7 +253,7 @@ test('mdast -> markdown', (t) => {
     'should serialize a table'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'table',
@@ -306,7 +305,7 @@ test('mdast -> markdown', (t) => {
     extensions: [gfmTableToMarkdown()]
   })
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(minitable, {
       extensions: [gfmTableToMarkdown({tableCellPadding: false})]
     }),
@@ -314,7 +313,7 @@ test('mdast -> markdown', (t) => {
     'should support `tableCellPadding: false`'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(minitable, {
       extensions: [gfmTableToMarkdown({tableCellPadding: true})]
     }),
@@ -322,7 +321,7 @@ test('mdast -> markdown', (t) => {
     'should support `tableCellPadding: true` (default)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(minitable, {
       extensions: [gfmTableToMarkdown({tablePipeAlign: false})]
     }),
@@ -330,7 +329,7 @@ test('mdast -> markdown', (t) => {
     'should support `tablePipeAlign: false`'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(minitable, {
       extensions: [gfmTableToMarkdown({tablePipeAlign: true})]
     }),
@@ -338,7 +337,7 @@ test('mdast -> markdown', (t) => {
     'should support `tablePipeAlign: true` (default)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'table',
@@ -360,7 +359,7 @@ test('mdast -> markdown', (t) => {
     'should support `stringLength`'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'paragraph', children: [{type: 'text', value: '| a |\n| - |'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -369,7 +368,7 @@ test('mdast -> markdown', (t) => {
     'should escape the leading pipe in what would start or continue a table'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'paragraph', children: [{type: 'text', value: 'a|\n-|'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -378,7 +377,7 @@ test('mdast -> markdown', (t) => {
     'should escape the leading dash in what could start a delimiter row (done by list dash)'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'paragraph', children: [{type: 'text', value: 'a\n:-'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -387,7 +386,7 @@ test('mdast -> markdown', (t) => {
     'should escape the leading colon in what could start a delimiter row'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -396,7 +395,7 @@ test('mdast -> markdown', (t) => {
     'should not escape a backslash in code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\\\b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -405,7 +404,7 @@ test('mdast -> markdown', (t) => {
     'should not escape an “escaped” backslash in code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\+b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -414,7 +413,7 @@ test('mdast -> markdown', (t) => {
     'should not escape an “escaped” other punctuation character in code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'inlineCode', value: 'a|b'},
       {extensions: [gfmTableToMarkdown()]}
@@ -423,7 +422,7 @@ test('mdast -> markdown', (t) => {
     'should not escape a pipe character in code *not* in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -432,7 +431,7 @@ test('mdast -> markdown', (t) => {
     'should escape a pipe character in code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'text', value: 'a\nb'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -441,7 +440,7 @@ test('mdast -> markdown', (t) => {
     'should escape eols in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {
         type: 'tableRow',
@@ -457,7 +456,7 @@ test('mdast -> markdown', (t) => {
     'should escape phrasing characters in table cells'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'text', value: 'a|b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -466,7 +465,7 @@ test('mdast -> markdown', (t) => {
     'should escape pipes in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b|c'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -475,7 +474,7 @@ test('mdast -> markdown', (t) => {
     'should escape multiple pipes in inline code in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'text', value: 'a|b|c'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -484,7 +483,7 @@ test('mdast -> markdown', (t) => {
     'should escape multiple pipes in a table cell'
   )
 
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'inlineCode', value: 'a||b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -492,7 +491,7 @@ test('mdast -> markdown', (t) => {
     '`a\\|\\|b`\n',
     'should escape adjacent pipes in inline code in a table cell'
   )
-  t.deepEqual(
+  assert.deepEqual(
     toMarkdown(
       {type: 'tableCell', children: [{type: 'text', value: 'a||b'}]},
       {extensions: [gfmTableToMarkdown()]}
@@ -500,6 +499,4 @@ test('mdast -> markdown', (t) => {
     'a\\|\\|b\n',
     'should escape adjacent pipes in a table cell'
   )
-
-  t.end()
 })
