@@ -75,13 +75,10 @@ test('gfmTableFromMarkdown', () => {
   )
 
   assert.deepEqual(
-    removePosition(
-      fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
-        extensions: [gfmTable],
-        mdastExtensions: [gfmTableFromMarkdown]
-      }),
-      true
-    ),
+    fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
+      extensions: [gfmTable],
+      mdastExtensions: [gfmTableFromMarkdown]
+    }),
     {
       type: 'root',
       children: [
@@ -92,15 +89,91 @@ test('gfmTableFromMarkdown', () => {
             {
               type: 'tableRow',
               children: [
-                {type: 'tableCell', children: [{type: 'text', value: 'a'}]},
-                {type: 'tableCell', children: [{type: 'text', value: 'b'}]},
-                {type: 'tableCell', children: [{type: 'text', value: 'c'}]},
-                {type: 'tableCell', children: [{type: 'text', value: 'd'}]}
-              ]
+                {
+                  type: 'tableCell',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'a',
+                      position: {
+                        start: {line: 1, column: 3, offset: 2},
+                        end: {line: 1, column: 4, offset: 3}
+                      }
+                    }
+                  ],
+                  position: {
+                    start: {line: 1, column: 1, offset: 0},
+                    end: {line: 1, column: 5, offset: 4}
+                  }
+                },
+                {
+                  type: 'tableCell',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'b',
+                      position: {
+                        start: {line: 1, column: 7, offset: 6},
+                        end: {line: 1, column: 8, offset: 7}
+                      }
+                    }
+                  ],
+                  position: {
+                    start: {line: 1, column: 5, offset: 4},
+                    end: {line: 1, column: 9, offset: 8}
+                  }
+                },
+                {
+                  type: 'tableCell',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'c',
+                      position: {
+                        start: {line: 1, column: 11, offset: 10},
+                        end: {line: 1, column: 12, offset: 11}
+                      }
+                    }
+                  ],
+                  position: {
+                    start: {line: 1, column: 9, offset: 8},
+                    end: {line: 1, column: 13, offset: 12}
+                  }
+                },
+                {
+                  type: 'tableCell',
+                  children: [
+                    {
+                      type: 'text',
+                      value: 'd',
+                      position: {
+                        start: {line: 1, column: 15, offset: 14},
+                        end: {line: 1, column: 16, offset: 15}
+                      }
+                    }
+                  ],
+                  position: {
+                    start: {line: 1, column: 13, offset: 12},
+                    end: {line: 1, column: 18, offset: 17}
+                  }
+                }
+              ],
+              position: {
+                start: {line: 1, column: 1, offset: 0},
+                end: {line: 1, column: 18, offset: 17}
+              }
             }
-          ]
+          ],
+          position: {
+            start: {line: 1, column: 1, offset: 0},
+            end: {line: 2, column: 22, offset: 39}
+          }
         }
-      ]
+      ],
+      position: {
+        start: {line: 1, column: 1, offset: 0},
+        end: {line: 2, column: 22, offset: 39}
+      }
     },
     'should support alignment'
   )
