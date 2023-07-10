@@ -77,14 +77,14 @@ npm install mdast-util-gfm-table
 In Deno with [`esm.sh`][esmsh]:
 
 ```js
-import {gfmTableFromMarkdown, gfmTableToMarkdown} from 'https://esm.sh/mdast-util-gfm-table@1'
+import {gfmTableFromMarkdown, gfmTableToMarkdown} from 'https://esm.sh/mdast-util-gfm-table@2'
 ```
 
 In browsers with [`esm.sh`][esmsh]:
 
 ```html
 <script type="module">
-  import {gfmTableFromMarkdown, gfmTableToMarkdown} from 'https://esm.sh/mdast-util-gfm-table@1?bundle'
+  import {gfmTableFromMarkdown, gfmTableToMarkdown} from 'https://esm.sh/mdast-util-gfm-table@2?bundle'
 </script>
 ```
 
