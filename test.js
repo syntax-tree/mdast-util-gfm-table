@@ -23,7 +23,7 @@ test('core', () => {
 test('gfmTableFromMarkdown', () => {
   assert.deepEqual(
     fromMarkdown('| a\n| -', {
-      extensions: [gfmTable],
+      extensions: [gfmTable()],
       mdastExtensions: [gfmTableFromMarkdown]
     }),
     {
@@ -76,7 +76,7 @@ test('gfmTableFromMarkdown', () => {
 
   assert.deepEqual(
     fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
-      extensions: [gfmTable],
+      extensions: [gfmTable()],
       mdastExtensions: [gfmTableFromMarkdown]
     }),
     {
@@ -178,14 +178,15 @@ test('gfmTableFromMarkdown', () => {
     'should support alignment'
   )
 
+  let tree = fromMarkdown('| `\\|` |\n | --- |', {
+    extensions: [gfmTable()],
+    mdastExtensions: [gfmTableFromMarkdown]
+  })
+
+  removePosition(tree, {force: true})
+
   assert.deepEqual(
-    removePosition(
-      fromMarkdown('| `\\|` |\n | --- |', {
-        extensions: [gfmTable],
-        mdastExtensions: [gfmTableFromMarkdown]
-      }),
-      true
-    ),
+    tree,
     {
       type: 'root',
       children: [
@@ -209,14 +210,15 @@ test('gfmTableFromMarkdown', () => {
     'should support an escaped pipe in code in a table cell'
   )
 
+  tree = fromMarkdown('`\\|`', {
+    extensions: [gfmTable()],
+    mdastExtensions: [gfmTableFromMarkdown]
+  })
+
+  removePosition(tree, {force: true})
+
   assert.deepEqual(
-    removePosition(
-      fromMarkdown('`\\|`', {
-        extensions: [gfmTable],
-        mdastExtensions: [gfmTableFromMarkdown]
-      }),
-      true
-    ),
+    tree,
     {
       type: 'root',
       children: [
@@ -226,14 +228,15 @@ test('gfmTableFromMarkdown', () => {
     'should not support an escaped pipe in code *not* in a table cell'
   )
 
+  tree = fromMarkdown('| `\\\\|`\\\\` b |\n | --- | --- |', {
+    extensions: [gfmTable()],
+    mdastExtensions: [gfmTableFromMarkdown]
+  })
+
+  removePosition(tree, {force: true})
+
   assert.deepEqual(
-    removePosition(
-      fromMarkdown('| `\\\\|`\\\\` b |\n | --- | --- |', {
-        extensions: [gfmTable],
-        mdastExtensions: [gfmTableFromMarkdown]
-      }),
-      true
-    ),
+    tree,
     {
       type: 'root',
       children: [
