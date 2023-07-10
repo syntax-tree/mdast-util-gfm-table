@@ -20,12 +20,12 @@ test('core', async function (t) {
   })
 })
 
-test('gfmTableFromMarkdown', async function (t) {
+test('gfmTableFromMarkdown()', async function (t) {
   await t.test('should support tables', async function () {
     assert.deepEqual(
       fromMarkdown('| a\n| -', {
         extensions: [gfmTable()],
-        mdastExtensions: [gfmTableFromMarkdown]
+        mdastExtensions: [gfmTableFromMarkdown()]
       }),
       {
         type: 'root',
@@ -79,7 +79,7 @@ test('gfmTableFromMarkdown', async function (t) {
     assert.deepEqual(
       fromMarkdown('| a | b | c | d |\n| - | :- | -: | :-: |', {
         extensions: [gfmTable()],
-        mdastExtensions: [gfmTableFromMarkdown]
+        mdastExtensions: [gfmTableFromMarkdown()]
       }),
       {
         type: 'root',
@@ -185,7 +185,7 @@ test('gfmTableFromMarkdown', async function (t) {
     async function () {
       const tree = fromMarkdown('| `\\|` |\n | --- |', {
         extensions: [gfmTable()],
-        mdastExtensions: [gfmTableFromMarkdown]
+        mdastExtensions: [gfmTableFromMarkdown()]
       })
 
       removePosition(tree, {force: true})
@@ -218,7 +218,7 @@ test('gfmTableFromMarkdown', async function (t) {
     async function () {
       const tree = fromMarkdown('`\\|`', {
         extensions: [gfmTable()],
-        mdastExtensions: [gfmTableFromMarkdown]
+        mdastExtensions: [gfmTableFromMarkdown()]
       })
 
       removePosition(tree, {force: true})
@@ -237,7 +237,7 @@ test('gfmTableFromMarkdown', async function (t) {
     async function () {
       const tree = fromMarkdown('| `\\\\|`\\\\` b |\n | --- | --- |', {
         extensions: [gfmTable()],
-        mdastExtensions: [gfmTableFromMarkdown]
+        mdastExtensions: [gfmTableFromMarkdown()]
       })
 
       removePosition(tree, {force: true})

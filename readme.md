@@ -112,7 +112,7 @@ const doc = await fs.readFile('example.md')
 
 const tree = fromMarkdown(doc, {
   extensions: [gfmTable()],
-  mdastExtensions: [gfmTableFromMarkdown]
+  mdastExtensions: [gfmTableFromMarkdown()]
 })
 
 console.log(tree)
@@ -174,14 +174,19 @@ console.log(out)
 ## API
 
 This package exports the identifiers
-[`gfmTableFromMarkdown`][api-gfmtablefrommarkdown] and
-[`gfmTableToMarkdown`][api-gfmtabletomarkdown].
+[`gfmTableFromMarkdown`][api-gfm-table-from-markdown] and
+[`gfmTableToMarkdown`][api-gfm-table-to-markdown].
 There is no default export.
 
 ### `gfmTableFromMarkdown`
 
-Extension for [`mdast-util-from-markdown`][mdast-util-from-markdown] to enable
-GFM tables ([`FromMarkdownExtension`][frommarkdownextension]).
+Create an extension for [`mdast-util-from-markdown`][mdast-util-from-markdown]
+to enable GFM tables in markdown.
+
+###### Returns
+
+Extension for `mdast-util-from-markdown` to enable GFM tables
+([`FromMarkdownExtension`][from-markdown-extension]).
 
 ### `gfmTableToMarkdown(options?)`
 
@@ -196,7 +201,7 @@ enable GFM tables in markdown.
 ###### Returns
 
 Extension for `mdast-util-to-markdown` to enable GFM tables
-([`ToMarkdownExtension`][tomarkdownextension]).
+([`ToMarkdownExtension`][to-markdown-extension]).
 
 ### `Options`
 
@@ -302,7 +307,7 @@ The following interfaces are added to **[mdast][]** by this utility.
 
 ```idl
 interface Table <: Parent {
-  type: "table"
+  type: 'table'
   align: [alignType]?
   children: [TableContent]
 }
@@ -579,13 +584,13 @@ abide by its terms.
 
 [dfn-break]: https://github.com/syntax-tree/mdast#break
 
-[frommarkdownextension]: https://github.com/syntax-tree/mdast-util-from-markdown#extension
+[from-markdown-extension]: https://github.com/syntax-tree/mdast-util-from-markdown#extension
 
-[tomarkdownextension]: https://github.com/syntax-tree/mdast-util-to-markdown#options
+[to-markdown-extension]: https://github.com/syntax-tree/mdast-util-to-markdown#options
 
-[api-gfmtablefrommarkdown]: #gfmtablefrommarkdown
+[api-gfm-table-from-markdown]: #gfmtablefrommarkdown
 
-[api-gfmtabletomarkdown]: #gfmtabletomarkdownoptions
+[api-gfm-table-to-markdown]: #gfmtabletomarkdownoptions
 
 [api-options]: #options
 
