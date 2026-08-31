@@ -662,4 +662,96 @@ test('gfmTableToMarkdown', async function (t) {
       )
     }
   )
+
+  await t.test(
+    'should preserve table row cell counts through parse → stringify → parse',
+    async function () {
+      const options = {
+        extensions: [gfmTable()],
+        mdastExtensions: [gfmTableFromMarkdown()]
+      }
+
+      /** @type {Array<[string, Array<number>]>} */
+      const fixtures = [
+        ['a||\n-|-\n|', [2, 1]],
+        ['||\n-|\n|||', [1, 2]],
+        ['||||||\n-|-|-|-|-\n|', [5, 1]],
+        [
+          '| a | b | c | d |\n| - | :- | -: | :-: |\n| e | f |\n| g | h | i | j | k |',
+          [4, 2, 5]
+        ]
+      ]
+
+      let index = -1
+
+      while (++index < fixtures.length) {
+        const fixture = fixtures[index]
+        assert(fixture)
+        const doc = fixture[0]
+        const expected = fixture[1]
+        const tree = fromMarkdown(doc, options)
+        const table = tree.children[0]
+        assert(table)
+        assert(table.type === 'table')
+        assert.deepEqual(
+          table.children.map(function (row) {
+            return row.children.length
+          }),
+          expected
+        )
+
+        const output = toMarkdown(tree, {extensions: [gfmTableToMarkdown()]})
+        const roundTrip = fromMarkdown(output, options)
+        const roundTable = roundTrip.children[0]
+        assert(roundTable)
+        assert(roundTable.type === 'table')
+        assert.deepEqual(
+          roundTable.children.map(function (row) {
+            return row.children.length
+          }),
+          expected
+        )
+      }
+    }
+  )
+
+  await t.test(
+    'should not treat escaped pipes as cell boundaries when rows are jagged',
+    async function () {
+      const output = toMarkdown(
+        {
+          type: 'table',
+          children: [
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'a|b'}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'c\\\\d'}]}
+              ]
+            },
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'e'}]}
+              ]
+            }
+          ]
+        },
+        {extensions: [gfmTableToMarkdown()]}
+      )
+      const tree = fromMarkdown(output, {
+        extensions: [gfmTable()],
+        mdastExtensions: [gfmTableFromMarkdown()]
+      })
+      const table = tree.children[0]
+      assert(table)
+      assert(table.type === 'table')
+      assert.deepEqual(
+        table.children.map(function (row) {
+          return row.children.length
+        }),
+        [2, 1]
+      )
+    }
+  )
 })
