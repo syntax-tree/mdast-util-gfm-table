@@ -662,4 +662,84 @@ test('gfmTableToMarkdown', async function (t) {
       )
     }
   )
+
+  await t.test(
+    'should not split a row at a pipe after a backslash in code',
+    async function () {
+      assert.deepEqual(
+        toMarkdown(
+          {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\|b'}]},
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '`a\\|b`\n'
+      )
+      assert.deepEqual(
+        toMarkdown(
+          {
+            type: 'tableCell',
+            children: [{type: 'inlineCode', value: 'a\\\\|b'}]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '`a\\\\\\|b`\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should round trip pipes after backslashes in code in a table',
+    async function () {
+      for (const [value, expected] of [
+        ['a|b', 'a|b'],
+        // A backslash right before a pipe cannot be written, it is dropped.
+        ['a\\|b', 'a|b'],
+        ['a\\\\|b', 'a\\\\|b'],
+        ['a\\\\\\|b', 'a\\\\|b'],
+        ['\\|', '|'],
+        ['a\\b|c', 'a\\b|c']
+      ]) {
+        /** @type {Table} */
+        const table = {
+          type: 'table',
+          children: [
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'a'}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'b'}]}
+              ]
+            },
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'inlineCode', value}]},
+                {type: 'tableCell', children: [{type: 'text', value: 'c'}]}
+              ]
+            }
+          ]
+        }
+        const tree = fromMarkdown(
+          toMarkdown(table, {extensions: [gfmTableToMarkdown()]}),
+          {
+            extensions: [gfmTable()],
+            mdastExtensions: [gfmTableFromMarkdown()]
+          }
+        )
+        const result = tree.children[0]
+        assert(result.type === 'table')
+        const row = result.children[1]
+
+        assert.equal(row.children.length, 2, JSON.stringify(value))
+        assert.deepEqual(
+          row.children[0].children[0],
+          {
+            type: 'inlineCode',
+            value: expected,
+            position: row.children[0].children[0].position
+          },
+          JSON.stringify(value)
+        )
+      }
+    }
+  )
 })
