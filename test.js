@@ -577,6 +577,58 @@ test('gfmTableToMarkdown', async function (t) {
     }
   )
 
+  await t.test(
+    'should not add a backslash after an odd number of backslashes',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\|b'}]},
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '`a\\|b`\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a backslash after an even number of backslashes',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'tableCell',
+            children: [{type: 'inlineCode', value: 'a\\\\|b'}]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '`a\\\\\\|b`\n',
+        'should add a backslash after an even number of backslashes'
+      )
+    }
+  )
+
+  await t.test(
+    'should round trip backslashes and pipes in code in a table cell',
+    async function () {
+      const input =
+        '| a | b |\n| - | - |\n| `a\\|b` | c |\n\n' +
+        '| a | b |\n| - | - |\n| `a\\\\b` | c |\n\n' +
+        '| a | b |\n| - | - |\n| `a\\b\\|c` | d |\n\n' +
+        '| a | b |\n| - | - |\n| `a\\\\\\|b` | c |\n'
+
+      assert.equal(
+        toMarkdown(
+          fromMarkdown(input, {
+            extensions: [gfmTable()],
+            mdastExtensions: [gfmTableFromMarkdown()]
+          }),
+          {extensions: [gfmTableToMarkdown({tablePipeAlign: false})]}
+        ),
+        input
+      )
+    }
+  )
+
   await t.test('should escape eols in a table cell', async function () {
     assert.equal(
       toMarkdown(
