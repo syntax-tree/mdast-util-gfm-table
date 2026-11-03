@@ -274,7 +274,7 @@ test('gfmTableToMarkdown', async function (t) {
   /** @type {Table} */
   const minitable = {
     type: 'table',
-    align: [null, 'left', 'center', 'right'],
+    align: [null, 'left', 'center'],
     children: [
       {
         type: 'tableRow',
@@ -466,6 +466,96 @@ test('gfmTableToMarkdown', async function (t) {
       '| a | 古 | 🤔 |\n| - | -- | -- |\n'
     )
   })
+
+  await t.test('should not fill rows with fewer cells', async function () {
+    const doc = '| a | b |\n| - | - |\n| c |\n'
+
+    assert.equal(
+      toMarkdown(
+        fromMarkdown(doc, {
+          extensions: [gfmTable()],
+          mdastExtensions: [gfmTableFromMarkdown()]
+        }),
+        {extensions: [gfmTableToMarkdown()]}
+      ),
+      doc
+    )
+  })
+
+  await t.test(
+    'should not widen the header for rows with more cells than `align`',
+    async function () {
+      const doc = '| a |\n| - |\n| b | c |\n'
+
+      assert.equal(
+        toMarkdown(
+          fromMarkdown(doc, {
+            extensions: [gfmTable()],
+            mdastExtensions: [gfmTableFromMarkdown()]
+          }),
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        doc
+      )
+    }
+  )
+
+  await t.test('should widen the header to `align`', async function () {
+    assert.equal(
+      toMarkdown(
+        {
+          type: 'table',
+          align: [null, null],
+          children: [
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'a'}]}
+              ]
+            },
+            {
+              type: 'tableRow',
+              children: [
+                {type: 'tableCell', children: [{type: 'text', value: 'b'}]}
+              ]
+            }
+          ]
+        },
+        {extensions: [gfmTableToMarkdown()]}
+      ),
+      '| a |   |\n| - | - |\n| b |\n'
+    )
+  })
+
+  await t.test(
+    'should widen the header for rows with more cells w/o `align`',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'table',
+            children: [
+              {
+                type: 'tableRow',
+                children: [
+                  {type: 'tableCell', children: [{type: 'text', value: 'a'}]}
+                ]
+              },
+              {
+                type: 'tableRow',
+                children: [
+                  {type: 'tableCell', children: [{type: 'text', value: 'b'}]},
+                  {type: 'tableCell', children: [{type: 'text', value: 'c'}]}
+                ]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '| a |   |\n| - | - |\n| b | c |\n'
+      )
+    }
+  )
 
   await t.test(
     'should escape the leading pipe in what would start or continue a table',
