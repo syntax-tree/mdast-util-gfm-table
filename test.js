@@ -558,6 +558,340 @@ test('gfmTableToMarkdown', async function (t) {
   )
 
   await t.test(
+    'should add a blank line between a table and a paragraph in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {type: 'paragraph', children: [{type: 'text', value: 'b'}]}
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n\n  b\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a blank line between a table and a definition in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {type: 'definition', identifier: 'b', label: 'b', url: 'c'}
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n\n  [b]: c\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a blank line between two tables in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n\n  | a |\n  | - |\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a blank line between a table and a setext heading in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'heading',
+                depth: 1,
+                children: [{type: 'text', value: 'b'}]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()], setext: true}
+        ),
+        '* | a |\n  | - |\n\n  b\n  =\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a blank line between a table and a heading with a break in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'heading',
+                depth: 1,
+                children: [
+                  {type: 'text', value: 'b'},
+                  {type: 'break'},
+                  {type: 'text', value: 'c'}
+                ]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n\n  b\\\n  c\n  =\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should add a blank line between a table and a heading with a line ending in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'heading',
+                depth: 1,
+                children: [{type: 'text', value: 'b\nc'}]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n\n  b\n  c\n  =\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should not add a blank line between a table and an ATX heading in a tight list item',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'heading',
+                depth: 1,
+                children: [{type: 'text', value: 'b'}]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()]}
+        ),
+        '* | a |\n  | - |\n  # b\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should not add a blank line between a table and a rank 3 heading in a tight list item w/ `setext: true`',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                type: 'heading',
+                depth: 3,
+                children: [{type: 'text', value: 'b'}]
+              }
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()], setext: true}
+        ),
+        '* | a |\n  | - |\n  ### b\n'
+      )
+    }
+  )
+
+  await t.test(
+    'should not add a blank line between a table and an empty heading in a tight list item w/ `setext: true`',
+    async function () {
+      assert.equal(
+        toMarkdown(
+          {
+            type: 'listItem',
+            spread: false,
+            children: [
+              {
+                type: 'table',
+                children: [
+                  {
+                    type: 'tableRow',
+                    children: [
+                      {
+                        type: 'tableCell',
+                        children: [{type: 'text', value: 'a'}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {type: 'heading', depth: 1, children: []}
+            ]
+          },
+          {extensions: [gfmTableToMarkdown()], setext: true}
+        ),
+        '* | a |\n  | - |\n  #\n'
+      )
+    }
+  )
+
+  await t.test(
     'should escape the leading pipe in what would start or continue a table',
     async function () {
       assert.equal(

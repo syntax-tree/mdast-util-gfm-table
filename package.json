@@ -9,7 +9,9 @@
     "devlop": "^1.0.0",
     "markdown-table": "^3.0.0",
     "mdast-util-from-markdown": "^2.0.0",
-    "mdast-util-to-markdown": "^2.0.0"
+    "mdast-util-to-markdown": "^2.0.0",
+    "mdast-util-to-string": "^4.0.0",
+    "unist-util-visit": "^5.0.0"
   },
   "description": "mdast extension to parse and serialize GFM tables",
   "devDependencies": {
