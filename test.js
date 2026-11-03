@@ -1,5 +1,5 @@
 /**
- * @typedef {import('mdast').Table} Table
+ * @import {Table} from 'mdast'
  */
 
 import assert from 'node:assert/strict'
