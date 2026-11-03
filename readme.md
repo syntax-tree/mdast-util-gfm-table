@@ -55,7 +55,7 @@ directly with `micromark-extension-gfm-table`.
 When you are working with syntax trees and want all of GFM, use
 [`mdast-util-gfm`][github-mdast-util-gfm] instead.
 
-All these packages are used [`remark-gfm`][github-remark-gfm], which
+All these packages are used in [`remark-gfm`][github-remark-gfm], which
 focusses on making it easier to transform content by abstracting these
 internals away.
 
@@ -229,8 +229,8 @@ const doc = `| Alpha | Bravo |
 | 👩‍❤️‍👩 | Delta |`
 
 const tree = fromMarkdown(doc, {
-  extensions: [gfmTable],
-  mdastExtensions: [gfmTableFromMarkdown]
+  extensions: [gfmTable()],
+  mdastExtensions: [gfmTableFromMarkdown()]
 })
 
 console.log(toMarkdown(tree, {extensions: [gfmTableToMarkdown()]}))
