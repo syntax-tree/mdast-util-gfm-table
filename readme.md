@@ -12,27 +12,27 @@
 
 ## Contents
 
-*   [What is this?](#what-is-this)
-*   [When to use this](#when-to-use-this)
-*   [Install](#install)
-*   [Use](#use)
-*   [API](#api)
-    *   [`gfmTableFromMarkdown`](#gfmtablefrommarkdown)
-    *   [`gfmTableToMarkdown(options?)`](#gfmtabletomarkdownoptions)
-    *   [`Options`](#options)
-*   [Examples](#examples)
-    *   [Example: `stringLength`](#example-stringlength)
-*   [HTML](#html)
-*   [Syntax](#syntax)
-*   [Syntax tree](#syntax-tree)
-    *   [Nodes](#nodes)
-    *   [Enumeration](#enumeration)
-    *   [Content model](#content-model)
-*   [Types](#types)
-*   [Compatibility](#compatibility)
-*   [Related](#related)
-*   [Contribute](#contribute)
-*   [License](#license)
+* [What is this?](#what-is-this)
+* [When to use this](#when-to-use-this)
+* [Install](#install)
+* [Use](#use)
+* [API](#api)
+  * [`gfmTableFromMarkdown`](#gfmtablefrommarkdown)
+  * [`gfmTableToMarkdown(options?)`](#gfmtabletomarkdownoptions)
+  * [`Options`](#options)
+* [Examples](#examples)
+  * [Example: `stringLength`](#example-stringlength)
+* [HTML](#html)
+* [Syntax](#syntax)
+* [Syntax tree](#syntax-tree)
+  * [Nodes](#nodes)
+  * [Enumeration](#enumeration)
+  * [Content model](#content-model)
+* [Types](#types)
+* [Compatibility](#compatibility)
+* [Related](#related)
+* [Contribute](#contribute)
+* [License](#license)
 
 ## What is this?
 
@@ -195,8 +195,8 @@ enable GFM tables in markdown.
 
 ###### Parameters
 
-*   `options` ([`Options`][api-options], optional)
-    — configuration
+* `options` ([`Options`][api-options], optional)
+  — configuration
 
 ###### Returns
 
@@ -209,13 +209,13 @@ Configuration (TypeScript type).
 
 ###### Fields
 
-*   `tableCellPadding` (`boolean`, default: `true`)
-    — whether to add a space of padding between delimiters and cells
-*   `tablePipeAlign` (`boolean`, default: `true`)
-    — whether to align the delimiters
-*   `stringLength` (`((value: string) => number)`, default: `s => s.length`)
-    — function to detect the length of table cell content, used when aligning
-    the delimiters between cells
+* `tableCellPadding` (`boolean`, default: `true`)
+  — whether to add a space of padding between delimiters and cells
+* `tablePipeAlign` (`boolean`, default: `true`)
+  — whether to align the delimiters
+* `stringLength` (`((value: string) => number)`, default: `s => s.length`)
+  — function to detect the length of table cell content, used when aligning
+  the delimiters between cells
 
 ## Examples
 
@@ -421,13 +421,13 @@ enum alignType {
 **alignType** represents how phrasing content is aligned
 ([\[CSSTEXT\]][css-text]).
 
-*   **`'left'`**: See the [`left`][css-left] value of the `text-align` CSS
-    property
-*   **`'right'`**: See the [`right`][css-right] value of the `text-align`
-    CSS property
-*   **`'center'`**: See the [`center`][css-center] value of the `text-align`
-    CSS property
-*   **`null`**: phrasing content is aligned as defined by the host environment
+* **`'left'`**: See the [`left`][css-left] value of the `text-align` CSS
+  property
+* **`'right'`**: See the [`right`][css-right] value of the `text-align`
+  CSS property
+* **`'center'`**: See the [`center`][css-center] value of the `text-align`
+  CSS property
+* **`null`**: phrasing content is aligned as defined by the host environment
 
 ### Content model
 
@@ -476,13 +476,13 @@ This utility works with `mdast-util-from-markdown` version 2+ and
 
 ## Related
 
-*   [`remarkjs/remark-gfm`][remark-gfm]
-    — remark plugin to support GFM
-*   [`syntax-tree/mdast-util-gfm`][mdast-util-gfm]
-    — same but all of GFM (autolink literals, footnotes, strikethrough, tables,
-    tasklists)
-*   [`micromark/micromark-extension-gfm-table`][extension]
-    — micromark extension to parse GFM tables
+* [`remarkjs/remark-gfm`][remark-gfm]
+  — remark plugin to support GFM
+* [`syntax-tree/mdast-util-gfm`][mdast-util-gfm]
+  — same but all of GFM (autolink literals, footnotes, strikethrough, tables,
+  tasklists)
+* [`micromark/micromark-extension-gfm-table`][extension]
+  — micromark extension to parse GFM tables
 
 ## Contribute
 
@@ -500,106 +500,106 @@ abide by its terms.
 
 <!-- Definitions -->
 
-[build-badge]: https://github.com/syntax-tree/mdast-util-gfm-table/workflows/main/badge.svg
-
-[build]: https://github.com/syntax-tree/mdast-util-gfm-table/actions
-
-[coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/mdast-util-gfm-table.svg
-
-[coverage]: https://codecov.io/github/syntax-tree/mdast-util-gfm-table
-
-[downloads-badge]: https://img.shields.io/npm/dm/mdast-util-gfm-table.svg
-
-[downloads]: https://www.npmjs.com/package/mdast-util-gfm-table
-
-[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size&query=$.size.compressedSize&url=https://deno.bundlejs.com/?q=mdast-util-gfm-table
-
-[size]: https://bundlejs.com/?q=mdast-util-gfm-table
-
-[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
-
-[backers-badge]: https://opencollective.com/unified/backers/badge.svg
-
-[collective]: https://opencollective.com/unified
-
-[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
-
-[chat]: https://github.com/syntax-tree/unist/discussions
-
-[npm]: https://docs.npmjs.com/cli/install
-
-[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
-
-[esmsh]: https://esm.sh
-
-[typescript]: https://www.typescriptlang.org
-
-[license]: license
-
-[author]: https://wooorm.com
-
-[health]: https://github.com/syntax-tree/.github
-
-[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
-
-[support]: https://github.com/syntax-tree/.github/blob/main/support.md
-
-[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
-
-[remark-gfm]: https://github.com/remarkjs/remark-gfm
-
-[mdast]: https://github.com/syntax-tree/mdast
-
-[mdast-util-gfm]: https://github.com/syntax-tree/mdast-util-gfm
-
-[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
-
-[mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
-
-[mdast-util-to-hast]: https://github.com/syntax-tree/mdast-util-to-hast
-
-[micromark]: https://github.com/micromark/micromark
-
-[extension]: https://github.com/micromark/micromark-extension-gfm-table
-
-[syntax]: https://github.com/micromark/micromark-extension-gfm-table#syntax
-
-[gfm]: https://github.github.com/gfm/
-
-[string-width]: https://github.com/sindresorhus/string-width
-
-[css-text]: https://drafts.csswg.org/css-text/
-
-[css-left]: https://drafts.csswg.org/css-text/#valdef-text-align-left
-
-[css-right]: https://drafts.csswg.org/css-text/#valdef-text-align-right
-
-[css-center]: https://drafts.csswg.org/css-text/#valdef-text-align-center
-
-[term-head]: https://github.com/syntax-tree/unist#head
-
-[dfn-parent]: https://github.com/syntax-tree/mdast#parent
-
-[dfn-phrasing-content]: https://github.com/syntax-tree/mdast#phrasingcontent
-
-[dfn-break]: https://github.com/syntax-tree/mdast#break
-
-[from-markdown-extension]: https://github.com/syntax-tree/mdast-util-from-markdown#extension
-
-[to-markdown-extension]: https://github.com/syntax-tree/mdast-util-to-markdown#options
-
 [api-gfm-table-from-markdown]: #gfmtablefrommarkdown
 
 [api-gfm-table-to-markdown]: #gfmtabletomarkdownoptions
 
 [api-options]: #options
 
-[dfn-flow-content]: #flowcontent-gfm-table
+[author]: https://wooorm.com
 
-[dfn-table-content]: #tablecontent
+[backers-badge]: https://opencollective.com/unified/backers/badge.svg
+
+[build]: https://github.com/syntax-tree/mdast-util-gfm-table/actions
+
+[build-badge]: https://github.com/syntax-tree/mdast-util-gfm-table/workflows/main/badge.svg
+
+[chat]: https://github.com/syntax-tree/unist/discussions
+
+[chat-badge]: https://img.shields.io/badge/chat-discussions-success.svg
+
+[coc]: https://github.com/syntax-tree/.github/blob/main/code-of-conduct.md
+
+[collective]: https://opencollective.com/unified
+
+[contributing]: https://github.com/syntax-tree/.github/blob/main/contributing.md
+
+[coverage]: https://codecov.io/github/syntax-tree/mdast-util-gfm-table
+
+[coverage-badge]: https://img.shields.io/codecov/c/github/syntax-tree/mdast-util-gfm-table.svg
+
+[css-center]: https://drafts.csswg.org/css-text/#valdef-text-align-center
+
+[css-left]: https://drafts.csswg.org/css-text/#valdef-text-align-left
+
+[css-right]: https://drafts.csswg.org/css-text/#valdef-text-align-right
+
+[css-text]: https://drafts.csswg.org/css-text/
+
+[dfn-break]: https://github.com/syntax-tree/mdast#break
 
 [dfn-enum-align-type]: #aligntype
+
+[dfn-flow-content]: #flowcontent-gfm-table
+
+[dfn-parent]: https://github.com/syntax-tree/mdast#parent
+
+[dfn-phrasing-content]: https://github.com/syntax-tree/mdast#phrasingcontent
 
 [dfn-row-content]: #rowcontent
 
 [dfn-table]: #table
+
+[dfn-table-content]: #tablecontent
+
+[downloads]: https://www.npmjs.com/package/mdast-util-gfm-table
+
+[downloads-badge]: https://img.shields.io/npm/dm/mdast-util-gfm-table.svg
+
+[esm]: https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c
+
+[esmsh]: https://esm.sh
+
+[extension]: https://github.com/micromark/micromark-extension-gfm-table
+
+[from-markdown-extension]: https://github.com/syntax-tree/mdast-util-from-markdown#extension
+
+[gfm]: https://github.github.com/gfm/
+
+[health]: https://github.com/syntax-tree/.github
+
+[license]: license
+
+[mdast]: https://github.com/syntax-tree/mdast
+
+[mdast-util-from-markdown]: https://github.com/syntax-tree/mdast-util-from-markdown
+
+[mdast-util-gfm]: https://github.com/syntax-tree/mdast-util-gfm
+
+[mdast-util-to-hast]: https://github.com/syntax-tree/mdast-util-to-hast
+
+[mdast-util-to-markdown]: https://github.com/syntax-tree/mdast-util-to-markdown
+
+[micromark]: https://github.com/micromark/micromark
+
+[npm]: https://docs.npmjs.com/cli/install
+
+[remark-gfm]: https://github.com/remarkjs/remark-gfm
+
+[size]: https://bundlejs.com/?q=mdast-util-gfm-table
+
+[size-badge]: https://img.shields.io/badge/dynamic/json?label=minzipped%20size\&query=$.size.compressedSize\&url=https://deno.bundlejs.com/?q=mdast-util-gfm-table
+
+[sponsors-badge]: https://opencollective.com/unified/sponsors/badge.svg
+
+[string-width]: https://github.com/sindresorhus/string-width
+
+[support]: https://github.com/syntax-tree/.github/blob/main/support.md
+
+[syntax]: https://github.com/micromark/micromark-extension-gfm-table#syntax
+
+[term-head]: https://github.com/syntax-tree/unist#head
+
+[to-markdown-extension]: https://github.com/syntax-tree/mdast-util-to-markdown#options
+
+[typescript]: https://www.typescriptlang.org

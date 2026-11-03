@@ -292,7 +292,7 @@ test('gfmTableToMarkdown', async function (t) {
   })
 
   await t.test('should serialize a table cell', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {
           type: 'tableCell',
@@ -309,7 +309,7 @@ test('gfmTableToMarkdown', async function (t) {
   })
 
   await t.test('should serialize a table row', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {
           type: 'tableRow',
@@ -332,7 +332,7 @@ test('gfmTableToMarkdown', async function (t) {
   })
 
   await t.test('should serialize a table', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {
           type: 'table',
@@ -370,7 +370,7 @@ test('gfmTableToMarkdown', async function (t) {
   })
 
   await t.test('should align cells', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {
           type: 'table',
@@ -403,7 +403,7 @@ test('gfmTableToMarkdown', async function (t) {
   })
 
   await t.test('should support `tableCellPadding: false`', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(minitable, {
         extensions: [gfmTableToMarkdown({tableCellPadding: false})]
       }),
@@ -424,7 +424,7 @@ test('gfmTableToMarkdown', async function (t) {
   )
 
   await t.test('should support `tablePipeAlign: false`', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(minitable, {
         extensions: [gfmTableToMarkdown({tablePipeAlign: false})]
       }),
@@ -445,7 +445,7 @@ test('gfmTableToMarkdown', async function (t) {
   )
 
   await t.test('should support `stringLength`', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {
           type: 'table',
@@ -470,7 +470,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape the leading pipe in what would start or continue a table',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {
             type: 'paragraph',
@@ -486,7 +486,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape the leading dash in what could start a delimiter row (done by list dash)',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'paragraph', children: [{type: 'text', value: 'a|\n-|'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -499,7 +499,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape the leading colon in what could start a delimiter row',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'paragraph', children: [{type: 'text', value: 'a\n:-'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -512,7 +512,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should not escape a backslash in code in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\b'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -525,7 +525,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should not escape an “escaped” backslash in code in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {
             type: 'tableCell',
@@ -541,7 +541,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should not escape an “escaped” other punctuation character in code in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'inlineCode', value: 'a\\+b'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -554,7 +554,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should not escape a pipe character in code *not* in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'inlineCode', value: 'a|b'},
           {extensions: [gfmTableToMarkdown()]}
@@ -567,7 +567,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape a pipe character in code in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -578,7 +578,7 @@ test('gfmTableToMarkdown', async function (t) {
   )
 
   await t.test('should escape eols in a table cell', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {type: 'tableCell', children: [{type: 'text', value: 'a\nb'}]},
         {extensions: [gfmTableToMarkdown()]}
@@ -590,7 +590,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape phrasing characters in table cells',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {
             type: 'tableRow',
@@ -608,7 +608,7 @@ test('gfmTableToMarkdown', async function (t) {
   )
 
   await t.test('should escape pipes in a table cell', async function () {
-    assert.deepEqual(
+    assert.equal(
       toMarkdown(
         {type: 'tableCell', children: [{type: 'text', value: 'a|b'}]},
         {extensions: [gfmTableToMarkdown()]}
@@ -620,7 +620,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape multiple pipes in inline code in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'inlineCode', value: 'a|b|c'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -633,7 +633,7 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape multiple pipes in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'text', value: 'a|b|c'}]},
           {extensions: [gfmTableToMarkdown()]}
@@ -646,14 +646,14 @@ test('gfmTableToMarkdown', async function (t) {
   await t.test(
     'should escape adjacent pipes in a table cell',
     async function () {
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'inlineCode', value: 'a||b'}]},
           {extensions: [gfmTableToMarkdown()]}
         ),
         '`a\\|\\|b`\n'
       )
-      assert.deepEqual(
+      assert.equal(
         toMarkdown(
           {type: 'tableCell', children: [{type: 'text', value: 'a||b'}]},
           {extensions: [gfmTableToMarkdown()]}
